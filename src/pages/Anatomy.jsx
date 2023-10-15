@@ -22,7 +22,6 @@ function Anatomy() {
     nextRef,
   } = useQuestion();
   const { auth } = useAuth();
-
   const [points, setPoints] = useState(0);
   const [completed, setCompleted] = useState(false);
 
@@ -121,7 +120,7 @@ function Anatomy() {
               borderRadius: "12px",
               height: "8px",
               backgroundColor: "white",
-              paddingLeft: `${(questions?.length / 8) * index}rem`,
+              paddingLeft: `calc(100% * ${index} / ${questions.length})`,
             }}
           >
             <p className=" bg-black h-1"></p>
@@ -136,7 +135,7 @@ function Anatomy() {
           </div>
 
           <div className=" m-8 p-8 rounded-2xl text-black text-center">
-            <h4 className=" mb-8 font-semibold text-4xl">
+            <h4 className=" mb-8 font-semibold  laptop:text-4xl phone:text-[1.2rem]">
               {index + 1}. {currentQuestion}
             </h4>
             <Options

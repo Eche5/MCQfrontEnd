@@ -4,12 +4,15 @@ import { useAuth } from "../Context/AuthContext";
 
 import Options from "./Options";
 import { useEffect, useState } from "react";
+import FunFactsPhysiology from "./FunFactsPhysiology";
+import { useNavigate } from "react-router-dom";
 
 function Physiology() {
   const {
     questions,
     numQuestions,
     index,
+    isLoading,
     selectedOption,
     dispatch,
     setSelectedOption,
@@ -19,6 +22,7 @@ function Physiology() {
   const [points, setPoints] = useState(0);
   const [completed, setCompleted] = useState(false);
   const { auth } = useAuth();
+  console.log(isLoading);
 
   const nextQuestionHandler = () => {
     dispatch({ type: "nextQuestion", payload: questions, status: "active" });
@@ -57,8 +61,9 @@ function Physiology() {
     document.title = "Medical Point | Physiology ";
   }, []);
   //restart quiz
+  const navigate = useNavigate();
   const restartQuiz = () => {
-    dispatch({ type: "restart", payload: questions, status: "active" });
+    navigate(`/${auth?.foundUser?._id}`);
     setSelectedOption(null);
   };
   const currentQuestion = questions[index]?.question;
@@ -69,8 +74,8 @@ function Physiology() {
   const disableButton = typeof selectedOption === "number";
 
   return (
-    <div>
-      {!completed && currentQuestion && (
+    <div className=" w-full">
+      {!completed && currentQuestion && !isLoading && (
         <>
           <div
             style={{
@@ -79,10 +84,10 @@ function Physiology() {
               borderRadius: "12px",
               height: "8px",
               backgroundColor: "white",
-              paddingLeft: `${(questions.length / 8) * index}rem`,
+              paddingLeft: `calc(100% * ${index} / ${questions.length})`,
             }}
           >
-            <p className=" bg-black h-1"></p>
+            <p className=" bg-black h-1 w-full"></p>
           </div>
           <div className=" flex justify-between">
             <h3 className=" text-3xl font-bold mt-2">
@@ -94,7 +99,7 @@ function Physiology() {
           </div>
 
           <div className=" m-8 p-8 rounded-2xl text-black text-center">
-            <h4 className=" mb-8 font-semibold text-4xl">
+            <h4 className=" mb-8 font-semibold laptop:text-4xl phone:text-[1.2rem] ">
               {index + 1}. {currentQuestion}
             </h4>
             <Options
@@ -129,19 +134,19 @@ function Physiology() {
         </>
       )}
       {completed && (
-        <div>
-          <h2 className=" m-40 text-center font-extrabold text-3xl">
+        <div className=" flex justify-center mt-28 ">
+          <h2 className="  text-center font-extrabold text-3xl">
             Your Score is {points}/{totalPoints}
           </h2>
           <button
             onClick={restartQuiz}
-            className="rounded-[100px] w-28 bg-slate-950 text-white p-2 hover:bg-gray-800 shadow-lg shadow-white hover:shadow-none "
+            className="  rounded-[100px] w-28 bg-slate-950 text-white p-2 hover:bg-gray-800 shadow-lg shadow-white hover:shadow-none "
           >
-            Restart quiz!!!
+            Go back to dashboard
           </button>
         </div>
       )}
-      <p></p>
+      {isLoading && <FunFactsPhysiology />}
     </div>
   );
 }

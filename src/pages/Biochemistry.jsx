@@ -1,14 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useQuestion } from "../Context/QuestionContext";
 import { axiosPrivate } from "../api/axios";
 import Options from "./Options";
 import { useEffect, useState } from "react";
+import FunFactsBioChemistry from "./FunFactsBioChemistry";
 
 function Biochemistry() {
   const {
     questions,
     numQuestions,
     index,
+    isLoading,
     selectedOption,
     dispatch,
     setSelectedOption,
@@ -51,8 +54,9 @@ function Biochemistry() {
     BiochemistryResult();
   };
   //restart quiz
+  const navigate = useNavigate();
   const restartQuiz = () => {
-    dispatch({ type: "restart", payload: questions, status: "active" });
+    navigate(`/${auth?.foundUser?._id}`);
     setSelectedOption(null);
   };
 
@@ -68,7 +72,7 @@ function Biochemistry() {
 
   return (
     <div>
-      {!completed && currentQuestion && (
+      {!completed && currentQuestion && !isLoading && (
         <>
           <div
             style={{
@@ -77,7 +81,7 @@ function Biochemistry() {
               borderRadius: "12px",
               height: "8px",
               backgroundColor: "white",
-              paddingLeft: `${(questions.length / 8) * index}rem`,
+              paddingLeft: `calc(100% * ${index} / ${questions.length})`,
             }}
           >
             <p className=" bg-black h-1"></p>
@@ -92,7 +96,7 @@ function Biochemistry() {
           </div>
 
           <div className=" m-8 p-8 rounded-2xl text-black text-center">
-            <h4 className=" mb-8 font-semibold text-4xl">
+            <h4 className=" mb-8 font-semibold  laptop:text-4xl phone:text-[1.2rem]">
               {index + 1}. {currentQuestion}
             </h4>
             <Options
@@ -127,19 +131,19 @@ function Biochemistry() {
         </>
       )}
       {completed && (
-        <div>
-          <h2 className=" m-40 text-center font-extrabold text-3xl">
+        <div className=" flex justify-center mt-28 ">
+          <h2 className="  text-center font-extrabold text-3xl">
             Your Score is {points}/{totalPoints}
           </h2>
           <button
             onClick={restartQuiz}
-            className="rounded-[100px] w-28 bg-slate-950 text-white p-2 hover:bg-gray-800 shadow-lg shadow-white hover:shadow-none "
+            className="  rounded-[100px] w-28 bg-slate-950 text-white p-2 hover:bg-gray-800 shadow-lg shadow-white hover:shadow-none "
           >
-            Restart quiz!!!
+            Go back to dashboard
           </button>
         </div>
       )}
-      <p></p>
+      {isLoading && <FunFactsBioChemistry />}
     </div>
   );
 }

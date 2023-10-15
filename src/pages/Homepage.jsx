@@ -7,7 +7,7 @@ function Homepage() {
   }, []);
 
   return (
-    <div className=" flex flex-col items-center text-gray-800 font-extrabold">
+    <div className=" flex flex-col items-center text-gray-800 font-extrabold w-full">
       <Header />
       <h2 className=" text-[3.6rem] mb-16" id="homepage">
         MCQs for medical students !

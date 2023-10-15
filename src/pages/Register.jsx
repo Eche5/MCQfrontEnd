@@ -41,10 +41,6 @@ function Register() {
     setErrMsg,
   } = useAuth();
 
-  useEffect(() => {
-    usernameRef.current.focus();
-  }, []);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -94,10 +90,11 @@ function Register() {
         >
           {errMsg}
         </p>
-        <h1 className="text-5xl leading-5 mt-4">Register</h1>
+        <h1 className="text-3xl leading-5 mt-4 text-center">
+          Create a new account
+        </h1>
         <form onSubmit={handleSubmit} className="flex flex-col pb-4">
           <label htmlFor="username" className="mt-4">
-            Username
             <FontAwesomeIcon
               icon={faCheck}
               className={validName ? "valid" : "hide"}
@@ -112,6 +109,7 @@ function Register() {
             type="text"
             id="username"
             ref={usernameRef}
+            placeholder="Username"
             autoComplete="off"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
@@ -120,8 +118,13 @@ function Register() {
             aria-describedby="uidnote"
             onFocus={() => setUserFocus(true)}
             onBlur={() => setUserFocus(false)}
-            className="text-[22px] p-1 rounded text-black"
+            className={
+              userFocus
+                ? "text-[22px] p-1 rounded text-black mb-6 "
+                : " outline outline-offset-4 outline-white text-[22px] p-1 rounded text-black mb-6"
+            }
           />
+
           <p
             id="uidnote"
             className={
@@ -137,7 +140,6 @@ function Register() {
           </p>
 
           <label htmlFor="password">
-            Password:
             <FontAwesomeIcon
               icon={faCheck}
               className={validPwd ? "valid" : "hide"}
@@ -150,6 +152,7 @@ function Register() {
           <input
             type="password"
             id="password"
+            placeholder="Password"
             onChange={(e) => setPwd(e.target.value)}
             value={pwd}
             required
@@ -157,7 +160,11 @@ function Register() {
             aria-describedby="pwdnote"
             onFocus={() => setPwdFocus(true)}
             onBlur={() => setPwdFocus(false)}
-            className="text-[22px] p-1 rounded text-black"
+            className={
+              pwdFocus
+                ? "text-[22px] p-1 rounded text-black mb-6"
+                : " outline outline-offset-4 outline-white text-[22px] p-1 rounded text-black mb-6"
+            }
           />
           <p
             id="pwdnote"
@@ -177,7 +184,6 @@ function Register() {
             <span aria-label="percent">%</span>
           </p>
           <label htmlFor="confirm_pwd">
-            Confirm Password:
             <FontAwesomeIcon
               icon={faCheck}
               className={validMatch && matchPwd ? "valid" : "hide"}
@@ -190,6 +196,7 @@ function Register() {
           <input
             type="password"
             id="confirm_pwd"
+            placeholder="Confirm Password"
             onChange={(e) => setMatchPwd(e.target.value)}
             value={matchPwd}
             required
@@ -197,7 +204,11 @@ function Register() {
             aria-describedby="confirmnote"
             onFocus={() => setMatchFocus(true)}
             onBlur={() => setMatchFocus(false)}
-            className="text-[22px] p-1 rounded text-black"
+            className={
+              matchFocus
+                ? "text-[22px] p-1 rounded text-black mb-6"
+                : " outline outline-offset-4 outline-white text-[22px] p-1 rounded text-black mb-6"
+            }
           />
           <p
             id="confirmnote"

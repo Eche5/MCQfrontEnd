@@ -2,6 +2,7 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import { useState, useEffect } from "react";
 import { useAuth } from "../Context/AuthContext";
 import Loader from "../pages/Loader";
+import { Outlet } from "react-router-dom";
 function PersistLogin({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
@@ -19,7 +20,7 @@ function PersistLogin({ children }) {
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, []);
 
-  return <>{isLoading ? <Loader /> : children}</>;
+  return <>{isLoading ? <Loader /> : <Outlet />}</>;
 }
 
 export default PersistLogin;

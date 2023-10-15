@@ -5,7 +5,6 @@ import axios from "../api/axios";
 const AuthContext = createContext();
 
 function AuthProvider({ children }) {
-  // const [{ user, token }, dispatch] = useReducer(reducer, initialState);
   const [username, setUsername] = useState("");
   const [pwd, setPwd] = useState("");
   const [auth, setAuth] = useState({});

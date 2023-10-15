@@ -7,6 +7,7 @@ import {
 } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import PropTypes from "prop-types";
+import { Outlet } from "react-router-dom";
 
 const initialState = {
   questions: [],
@@ -36,7 +37,7 @@ const reducer = (state, action) => {
 };
 const QuestionContext = createContext();
 
-function QuestionProvider({ children }) {
+function QuestionProvider() {
   const [{ questions, status, index }, dispatch] = useReducer(
     reducer,
     initialState
@@ -47,7 +48,7 @@ function QuestionProvider({ children }) {
   }, 0);
   const numQuestions = questions?.length;
 
-  const [isLoading, setIsLoadin] = useState(false);
+  const [isLoading, setIsLoadin] = useState(true);
   const axiosPrivate = useAxiosPrivate();
 
   const nextRef = createRef(null);
@@ -74,7 +75,8 @@ function QuestionProvider({ children }) {
       });
       const data = response.data;
       dispatch({ type: "dataReceived", payload: data.data });
-      if (response.statusText === "OK") setIsLoadin(false);
+      if (response.statusText === "OK" || response.status === 200)
+        setIsLoadin(false);
     } catch (error) {
       dispatch({ type: "dataFailed" });
     }
@@ -86,8 +88,10 @@ function QuestionProvider({ children }) {
         withCredentials: true,
       });
       const data = response.data;
+      console.log(response);
       dispatch({ type: "dataReceived", payload: data.data });
-      if (response.statusText === "OK") setIsLoadin(false);
+      if (response.statusText === "OK" || response.status === 200)
+        setIsLoadin(false);
     } catch (error) {
       dispatch({ type: "dataFailed" });
     }
@@ -111,7 +115,7 @@ function QuestionProvider({ children }) {
         nextRef,
       }}
     >
-      {children}
+      <Outlet />
     </QuestionContext.Provider>
   );
 }
