@@ -20,18 +20,24 @@ function Physiology() {
   } = useQuestion();
 
   const [points, setPoints] = useState(0);
+
   const [completed, setCompleted] = useState(false);
+
   const { auth } = useAuth();
-  console.log(isLoading);
 
   const nextQuestionHandler = () => {
     dispatch({ type: "nextQuestion", payload: questions, status: "active" });
+
     setSelectedOption(null);
   };
+
   const currentquestion = index + 1;
+
   //Result Handler
+
   const resultHandler = () => {
     setCompleted(true);
+
     PhysiologyResult();
   };
 
@@ -39,19 +45,18 @@ function Physiology() {
     try {
       const result = {
         score: points,
+
         course: "physiology",
+
         user: auth?.foundUser?._id,
       };
+
       const RESULT_URL = "/results";
-      const response = await axiosPrivate.post(
-        RESULT_URL,
-        JSON.stringify(result),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
+
+      await axiosPrivate.post(RESULT_URL, JSON.stringify(result), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -60,15 +65,22 @@ function Physiology() {
   useEffect(() => {
     document.title = "Medical Point | Physiology ";
   }, []);
+
   //restart quiz
   const navigate = useNavigate();
+
   const restartQuiz = () => {
     navigate(`/${auth?.foundUser?._id}`);
+
     setSelectedOption(null);
   };
+
   const currentQuestion = questions[index]?.question;
+
   const currentOption = questions[index]?.options;
+
   const correctOption = questions[index]?.correctOption;
+
   const currentPoints = questions[index]?.points;
 
   const disableButton = typeof selectedOption === "number";

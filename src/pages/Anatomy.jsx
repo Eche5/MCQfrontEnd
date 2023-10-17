@@ -21,8 +21,11 @@ function Anatomy() {
     setIsLoadin,
     nextRef,
   } = useQuestion();
+
   const { auth } = useAuth();
+
   const [points, setPoints] = useState(0);
+
   const [completed, setCompleted] = useState(false);
 
   const nextQuestionHandler = () => {
@@ -34,7 +37,9 @@ function Anatomy() {
 
     setSelectedOption(null);
   };
+
   const currentquestion = index + 1;
+
   const AnatomyResult = async () => {
     try {
       const result = {
@@ -42,30 +47,32 @@ function Anatomy() {
         course: "anatomy",
         user: auth?.foundUser?._id,
       };
+
       const RESULT_URL = "/results";
-      const response = await axiosPrivate.post(
-        RESULT_URL,
-        JSON.stringify(result),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
+
+      await axiosPrivate.post(RESULT_URL, JSON.stringify(result), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
     } catch (error) {
       console.log(error);
     }
   };
   //Result Handler
+
   const resultHandler = () => {
     setCompleted(true);
+
     AnatomyResult();
   };
+
   const playCompletedSound = useCallback(() => {
     const sound = new Audio(finished);
+
     sound.onerror = (error) => {
       console.error("Error playing sound:", error);
     };
+
     sound.currentTime = -5;
 
     sound.play();
@@ -73,9 +80,11 @@ function Anatomy() {
 
   const playFailedSound = useCallback(() => {
     const sound = new Audio(failed);
+
     sound.onerror = (error) => {
       console.error("Error playing sound:", error);
     };
+
     sound.currentTime = -5;
 
     sound.play();
@@ -88,10 +97,13 @@ function Anatomy() {
       playFailedSound();
     }
   }, [completed, playCompletedSound, points, playFailedSound]);
+
   const navigate = useNavigate();
   //restart quiz
+
   const restartQuiz = () => {
     navigate(`/${auth?.foundUser?._id}`);
+
     setSelectedOption(null);
   };
 
@@ -100,11 +112,15 @@ function Anatomy() {
   }, []);
 
   const currentQuestion = questions?.[index]?.question;
+
   const currentOption = questions?.[index]?.options;
+
   const correctOption = questions?.[index]?.correctOption;
+
   const currentPoints = questions?.[index]?.points;
 
   const disableButton = typeof selectedOption === "number";
+
   useEffect(() => {
     setIsLoadin(true);
   }, []);

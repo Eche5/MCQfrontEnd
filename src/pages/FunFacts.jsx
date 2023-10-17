@@ -3,7 +3,9 @@ import { useAuth } from "../Context/AuthContext";
 
 function FunFacts() {
   const { auth } = useAuth();
+
   const initialMessage = ` Hello ${auth?.username}, Did you know that...`;
+
   const [Message, SetMessage] = useState(initialMessage);
 
   const facts = [
@@ -20,11 +22,15 @@ function FunFacts() {
     "Gross anatomy is used for studying in detail about the different organs and is mainly used in endoscopy, angiography, magnetic resonance imaging (MRI) and X-rays.",
     "The human tongue is the strongest muscle and the jawbone is the hardest bone in the human body.",
   ];
+
   const randomNumber = Math.floor(Math.random() * facts.length) + 1;
+
   const randomfacts = facts[randomNumber];
+
   useEffect(() => {
     SetMessage(randomfacts);
   }, []);
+
   return (
     <div>
       <h1 className=" text-3xl text-center mt-36">

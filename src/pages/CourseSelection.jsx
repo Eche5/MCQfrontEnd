@@ -8,14 +8,11 @@ import { useQuestion } from "../Context/QuestionContext";
 import { useEffect, useState } from "react";
 function CourseSelection() {
   const [isFakeDark, setIsFakeDark] = useState(false);
+
   const { auth } = useAuth();
 
-  const {
-    fetchQuestions,
-    fetchPhyQuestions,
-    fetchBiochemQuestions,
-    setIsLoadin,
-  } = useQuestion();
+  const { fetchQuestions, fetchPhyQuestions, fetchBiochemQuestions } =
+    useQuestion();
 
   useEffect(() => {
     document.title = "Medical Point | Course Selection ";
@@ -41,7 +38,6 @@ function CourseSelection() {
   };
 
   const onHandlePhysiology = () => {
-    setIsLoadin(true);
     setTimeout(() => {
       fetchPhyQuestions();
     }, 6000);

@@ -3,7 +3,9 @@ import { useAuth } from "../Context/AuthContext";
 
 function FunFactsBioChemistry() {
   const { auth } = useAuth();
+
   const initialMessage = ` Hello ${auth?.username}, Did you know that...`;
+
   const [Message, SetMessage] = useState(initialMessage);
 
   const funBiochemistryFacts = [
@@ -21,10 +23,13 @@ function FunFactsBioChemistry() {
 
   const randomNumber =
     Math.floor(Math.random() * funBiochemistryFacts.length) + 1;
+
   const randomfacts = funBiochemistryFacts[randomNumber];
+
   useEffect(() => {
     SetMessage(randomfacts);
   }, []);
+
   return (
     <div>
       <h1 className=" text-3xl text-center mt-36">

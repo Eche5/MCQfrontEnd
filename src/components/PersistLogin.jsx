@@ -5,8 +5,11 @@ import Loader from "../pages/Loader";
 import { Outlet } from "react-router-dom";
 function PersistLogin({ children }) {
   const [isLoading, setIsLoading] = useState(true);
+
   const refresh = useRefreshToken();
+
   const { auth } = useAuth();
+
   useEffect(() => {
     const verifyRefreshToken = async () => {
       try {
@@ -17,6 +20,7 @@ function PersistLogin({ children }) {
         setIsLoading(false);
       }
     };
+
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, []);
 

@@ -4,10 +4,15 @@ import Loader from "./Loader";
 
 function Results() {
   const navigate = useNavigate();
+
   const { results, isLoading } = useResult();
+
   const params = useParams();
+
   const id = params.id;
+
   const noTest = results?.userResults?.length < 1;
+
   return (
     <>
       {!isLoading && !noTest && (

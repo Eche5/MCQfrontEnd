@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 
 function shuffleArray(array) {
   // Fisher-Yates shuffle algorithm
+
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
+
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -17,23 +19,29 @@ function Options({ currentOption, correctOption, setPoints, currentPoints }) {
   const alphabet = "ABCDEFGH";
 
   const { selectedOption, setSelectedOption } = useQuestion();
+
   const [shuffledIndexes, setShuffledIndexes] = useState([]);
 
   useEffect(() => {
     // Create an array of indexes and shuffle them
     const indexes = Array.from(
       { length: currentOption.length },
+
       (_, index) => index
     );
+
     const shuffled = shuffleArray(indexes);
+
     setShuffledIndexes(shuffled);
   }, [currentOption]);
 
   const playSound = () => {
     const sound = new Audio(ClickSound);
+
     sound.onerror = (error) => {
       console.error("Error playing sound:", error);
     };
+
     sound.currentTime = 0;
 
     sound.play();
@@ -41,9 +49,11 @@ function Options({ currentOption, correctOption, setPoints, currentPoints }) {
 
   const playFailedSound = () => {
     const sound = new Audio(Failed);
+
     sound.onerror = (error) => {
       console.error("Error playing sound:", error);
     };
+
     sound.currentTime = 0;
 
     sound.play();
@@ -51,9 +61,12 @@ function Options({ currentOption, correctOption, setPoints, currentPoints }) {
 
   const selectedAnswer = (index) => {
     setSelectedOption(index);
+
     if (correctOption === shuffledIndexes[index]) {
       playSound();
+
       setPoints((points) => points + currentPoints);
+
       // nextRef.current.scrollIntoView({ behavior: "smooth" });
     } else {
       playFailedSound();

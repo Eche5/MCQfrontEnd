@@ -12,18 +12,23 @@ import Spinner from "../components/Spinner";
 
 function Register() {
   const usernameRef = useRef();
+
   const errRef = useRef();
 
   const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
   const [validName, setValidName] = useState(false);
+
   const [userFocus, setUserFocus] = useState(false);
 
   const [validPwd, setValidPwd] = useState(false);
+
   const [pwdFocus, setPwdFocus] = useState(false);
 
   const [validMatch, setValidMatch] = useState(false);
+
   const [matchFocus, setMatchFocus] = useState(false);
 
   const {
@@ -49,6 +54,7 @@ function Register() {
 
   useEffect(() => {
     setValidPwd(PWD_REGEX.test(pwd));
+
     setValidMatch(pwd === matchPwd);
   }, [pwd, matchPwd, PWD_REGEX]);
 
@@ -58,18 +64,24 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const v1 = USER_REGEX.test(username);
+
     const v2 = PWD_REGEX.test(pwd);
+
     if (!v1 || !v2) {
       setErrMsg("Invalid Entry");
+
       return;
     }
+
     CreateAccount();
   };
 
   useEffect(() => {
     document.title = "Medical Point | Register ";
   }, []);
+
   useEffect(() => {
     if (isCreated) navigate("/course", { replace: true });
   });

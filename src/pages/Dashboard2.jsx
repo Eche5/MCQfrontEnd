@@ -1,4 +1,3 @@
-import avaatar from "../assets/Profile_avatar_placeholder_large.png";
 import logo from "../assets/newLogo.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,7 +15,9 @@ import { useEffect, useState } from "react";
 
 function Dashboard2() {
   const { auth } = useAuth();
+
   const { fetchResults } = useResult();
+
   const Logout = useLogOut();
 
   const logOutHandler = async () => {
@@ -32,14 +33,19 @@ function Dashboard2() {
 
     if (result.isConfirmed) Logout();
   };
+
   const params = useParams();
+
   const id = params.id;
+
   const course = params.course;
+
   const [isFakeDark, setIsFakeDark] = useState(false);
 
   useEffect(() => {
     fetchResults(id, course);
   }, [course, id]);
+
   const [isOpen, setIsOpen] = useState(false);
   useEffect(
     function () {
@@ -47,9 +53,11 @@ function Dashboard2() {
     },
     [isFakeDark]
   );
+
   const sideBarOpener = () => {
     setIsOpen((prev) => !prev); // Use !prev to toggle the state
   };
+
   const opendropBar = [
     { name: "Home", link: "/course" },
     { name: "Anatomy", link: "results/anatomy" },

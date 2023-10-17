@@ -3,7 +3,9 @@ import { useAuth } from "../Context/AuthContext";
 
 function FunFactsPhysiology() {
   const { auth } = useAuth();
+
   const initialMessage = ` Hello ${auth?.username}, Did you know that...`;
+
   const [Message, SetMessage] = useState(initialMessage);
 
   const funPhysiologyFacts = [
@@ -21,11 +23,13 @@ function FunFactsPhysiology() {
 
   const randomNumber =
     Math.floor(Math.random() * funPhysiologyFacts.length) + 1;
+
   const randomfacts = funPhysiologyFacts[randomNumber];
-  console.log(randomfacts);
+
   useEffect(() => {
     SetMessage(randomfacts);
   }, []);
+
   return (
     <div>
       <h1 className=" text-3xl text-center mt-36">

@@ -15,6 +15,7 @@ const initialState = {
   index: 0,
   TimeRemaining: 10,
 };
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "dataReceived":
@@ -35,6 +36,7 @@ const reducer = (state, action) => {
       throw new Error("Action is unknown");
   }
 };
+
 const QuestionContext = createContext();
 
 function QuestionProvider() {
@@ -42,13 +44,17 @@ function QuestionProvider() {
     reducer,
     initialState
   );
+
   const [selectedOption, setSelectedOption] = useState(null);
+
   const totalPoints = questions?.reduce((a, b) => {
     return a + b.points;
   }, 0);
+
   const numQuestions = questions?.length;
 
   const [isLoading, setIsLoadin] = useState(true);
+
   const axiosPrivate = useAxiosPrivate();
 
   const nextRef = createRef(null);
@@ -56,40 +62,52 @@ function QuestionProvider() {
   const fetchQuestions = async () => {
     try {
       setIsLoadin(true);
+
       const response = await axiosPrivate.get("/anatomy", {
         withCredentials: true,
       });
 
       const data = response.data;
+
       dispatch({ type: "dataReceived", payload: data.data });
+
       if (response.status === 200) setIsLoadin(false);
     } catch (error) {
       dispatch({ type: "dataFailed" });
     }
   };
+
   const fetchPhyQuestions = async () => {
     try {
       setIsLoadin(true);
+
       const response = await axiosPrivate.get("/physiology", {
         withCredentials: true,
       });
+
       const data = response.data;
+
       dispatch({ type: "dataReceived", payload: data.data });
+
       if (response.statusText === "OK" || response.status === 200)
         setIsLoadin(false);
     } catch (error) {
       dispatch({ type: "dataFailed" });
     }
   };
+
   const fetchBiochemQuestions = async () => {
     try {
       setIsLoadin(true);
+
       const response = await axiosPrivate.get("/biochemistry", {
         withCredentials: true,
       });
+
       const data = response.data;
-      console.log(response);
+
       dispatch({ type: "dataReceived", payload: data.data });
+
       if (response.statusText === "OK" || response.status === 200)
         setIsLoadin(false);
     } catch (error) {
@@ -124,6 +142,7 @@ QuestionProvider.propTypes = {
 };
 const useQuestion = () => {
   const context = useContext(QuestionContext);
+
   return context;
 };
 

@@ -6,22 +6,32 @@ const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [username, setUsername] = useState("");
+
   const [pwd, setPwd] = useState("");
+
   const [auth, setAuth] = useState({});
 
   const [errMsg, setErrMsg] = useState("");
+
   const [matchPwd, setMatchPwd] = useState("");
+
   const [isCreated, setIsCreated] = useState(false);
+
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   const [isSigningUp, setIssSigningUp] = useState("Sign Up");
+
   const errRef = useRef();
 
   //Create Account
   const CreateAccount = async () => {
     const REGISTER_URL = "/register";
+
     try {
       const userData = { username, password: pwd, confirmPassword: matchPwd };
+
       setIssSigningUp("Creating your account...");
+
       setIsAuthenticating(true);
 
       await axios.post(REGISTER_URL, JSON.stringify(userData), {
@@ -30,12 +40,17 @@ function AuthProvider({ children }) {
         },
         withCredentials: true,
       });
+
       setIsCreated(true);
+
       setIssSigningUp("Sign Up");
+
       setIsAuthenticating(false);
 
       setUsername("");
+
       setPwd("");
+
       setMatchPwd("");
     } catch (err) {
       if (err.response.status === 404) {
@@ -43,8 +58,11 @@ function AuthProvider({ children }) {
       } else {
         setErrMsg("Registration Failed!");
       }
+
       setIsCreated(false);
+
       setIssSigningUp("Sign Up");
+
       setIsAuthenticating(false);
     }
   };
@@ -78,8 +96,10 @@ AuthProvider.propTypes = {
 };
 function useAuth() {
   const context = useContext(AuthContext);
+
   if (context === undefined)
     throw new Error("AuthContext was used outside the AuthProvider");
+
   return context;
 }
 export { AuthProvider, useAuth };

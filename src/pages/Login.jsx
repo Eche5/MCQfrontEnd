@@ -7,30 +7,43 @@ import { useAuth } from "../Context/AuthContext";
 import Spinner from "../components/Spinner";
 function Login() {
   const usernameRef = useRef();
+
   const usernameDivRef = useRef();
+
   const pwdDivRef = useRef();
 
   const [showPassword, setShowPassword] = useState(false);
+
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   const [isValid, setIsValid] = useState(false);
+
   const [username, setUsername] = useState("");
+
   const [errMsg, setErrMsg] = useState("");
+
   const errRef = useRef();
+
   const [isLogin, setIssLoggingin] = useState("Log in");
 
   const [pwd, setPwd] = useState("");
+
   const LOGIN_URL = "/auth";
+
   const { setAuth } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   const navigate = useNavigate();
+
   const from = location.state?.from?.pathname || "/course";
   //saves last inputed username
+
   useEffect(() => {
     const savedUsername = localStorage.getItem("lastUsername");
+
     if (savedUsername) {
       setUsername(savedUsername);
     }
@@ -41,7 +54,9 @@ function Login() {
 
     try {
       setIssLoggingin("Logging in...");
+
       setIsAuthenticating(true);
+
       const response = await axios.post(
         LOGIN_URL,
         JSON.stringify({ username, password: pwd }),
@@ -50,17 +65,23 @@ function Login() {
           withCredentials: true,
         }
       );
+
       const accessToken = response?.data?.accessToken;
+
       const foundUser = response?.data?.foundUser;
+
       setAuth({ foundUser, accessToken });
+
       localStorage.setItem("lastUsername", username);
 
       setIssLoggingin("Log in");
+
       setUsername("");
+
       setPwd("");
+
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err.response);
       if (err.response.status === 404) {
         setErrMsg(err.response.data.message);
       } else if (err.response.status === 401) {
@@ -68,8 +89,11 @@ function Login() {
       } else {
         setErrMsg("No Server Response");
       }
+
       setIssLoggingin("Log in");
+
       setIsAuthenticating(false);
+
       errRef.current.focus();
     }
   };
@@ -78,7 +102,9 @@ function Login() {
 
   useEffect(() => {
     document.title = "Medical Point | Login ";
+
     usernameRef.current.focus();
+
     usernameDivRef.current.focus();
   }, []);
 
@@ -95,14 +121,17 @@ function Login() {
   }, [username, pwd, setErrMsg]);
 
   const handleUsernameFocus = () => {};
+
   usernameDivRef.current?.classList?.add("focus-outline");
 
   const handleUsernameBlur = () => {
     usernameDivRef.current.classList.remove("focus-outline");
   };
+
   const handlePwdFocus = () => {
     pwdDivRef.current.classList.add("focus-outline");
   };
+
   const handlePwdBlur = () => {
     pwdDivRef.current.classList.remove("focus-outline");
   };
